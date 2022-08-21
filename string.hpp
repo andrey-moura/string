@@ -134,8 +134,8 @@ namespace uva
         template<typename map>
         std::pair<std::vector<typename map::key_type>, std::vector<typename map::mapped_type>> split(const map& __map)
         {
-            std::vector<map::key_type> keys;
-            std::vector<map::mapped_type> values;
+            std::vector<typename map::key_type> keys;
+            std::vector<typename map::mapped_type> values;
 
             for(auto& pair : __map)
             {
