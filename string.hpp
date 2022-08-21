@@ -96,7 +96,7 @@ namespace uva
         template <class map, typename function>
         auto join(const map& m, function f)
         {
-            std::vector<decltype(f(map::value_type()))> values;
+            std::vector<decltype(f(typename map::value_type()))> values;
 
             for(const typename map::value_type& val : m)
             {
