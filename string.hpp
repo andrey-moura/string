@@ -98,7 +98,7 @@ namespace uva
         {
             std::vector<decltype(f(map::value_type()))> values;
 
-            for(const map::value_type& val : m)
+            for(const typename map::value_type& val : m)
             {
                 values.push_back(std::move(f(val)));
             }
