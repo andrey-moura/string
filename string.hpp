@@ -165,7 +165,7 @@ namespace uva
             using out_container = rebound<container, decltype(f(values[0]))>;
             out_container out_values;
 
-            if constexpr (is_reservable<out_container>)
+            if constexpr (is_reservable<out_container>::value)
             {
                 out_values.reserve(values.size());
             }
