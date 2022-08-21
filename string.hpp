@@ -62,16 +62,14 @@ namespace uva
         concept is_map = is_pair<typename map::value_type>::value;
 
         template<typename C, typename V>
-        requires requires (C& c, V&& v) { c.push_back(std::forward<V>(v)); }
-        auto add_to_container(C& container, V&& value) {
-            return container.push_back(std::forward<V>(value));
-        }
-
-        template<typename C, typename V>
-        requires (requires (C& c, V&& v) { c.insert(c.end(), std::forward<V>(v)); } &&
-                  !requires(C& c, V&& v) { c.push_back(std::forward<V>(v)); })
-        auto add_to_container(C& container, V&& value) {
-            return container.insert(container.end(), std::forward<V>(value));
+        void add_to_container(C& container, V&& value) {
+            if constexpr(is_map<C>)
+            {  
+                container.insert(std::forward<V>(value));
+            } else
+            {
+                container.push_back(std::forward<V>(value));
+            }
         }
 
         template<typename T>
