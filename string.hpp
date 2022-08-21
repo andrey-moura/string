@@ -5,6 +5,7 @@
 #include <sstream>
 #include <vector>
 #include <functional>
+#include <map>
 
 const std::string& operator||(const std::string& left, const std::string& right);
 
@@ -49,8 +50,11 @@ namespace uva
         struct is_container : std::integral_constant<bool, has_const_iterator<T>::value && has_begin_end<T>::beg_value && has_begin_end<T>::end_value> 
         { };
 
-        template <typename T> 
-        concept is_reservable = requires (T t) { t.resize(0); };
+        template <typename T, typename = int>
+        struct is_reservable : std::false_type { };
+
+        template <typename T>
+        struct is_reservable <T, decltype(&T::reserve, 0)> : std::true_type { };
 
         template <typename>
         struct is_pair : std::false_type { };
@@ -58,12 +62,15 @@ namespace uva
         template <typename k, typename v>
         struct is_pair<std::pair<k, v>> : std::true_type { };
 
-        template<class map>
-        concept is_map = is_pair<typename map::value_type>::value;
+        template <typename>
+        struct is_map : std::false_type { };
+
+        template <typename k, typename v>
+        struct is_map<std::map<k, v>> : std::true_type { };
 
         template<typename C, typename V>
         void add_to_container(C& container, V&& value) {
-            if constexpr(is_map<C>)
+            if constexpr(is_map<C>::value)
             {  
                 container.insert(std::forward<V>(value));
             } else
@@ -86,7 +93,7 @@ namespace uva
 
         std::string tolower(const std::string& __str);
 
-        template <class map, typename function> requires is_map<map>
+        template <class map, typename function>
         auto join(const map& m, function f)
         {
             std::vector<decltype(f(map::value_type()))> values;
