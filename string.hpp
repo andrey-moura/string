@@ -179,5 +179,11 @@ namespace uva
         }
 
         std::string prefix_sufix(const std::string& str, const std::string& prefix, const std::string& sufix);
+
+        std::string split_on_upper(const std::string& s, char separator = '-');
+
+        std::string to_snake_case(const std::string& s);
+
+        std::string replace(const std::string& str, const char& find, const char& replace);
     };
 };
