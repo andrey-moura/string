@@ -52,13 +52,21 @@ std::map<int, std::string> romanNumeralsMap =
 cspec_describe("uva::support",
 
     context("join",
-        it("should join a map",[](){
+        it("should join roman with their numerals",[](){
             auto joined_roman_numerals = uva::string::join(romanNumeralsMap, [](const auto& number_roman) {
                 return std::format("{}={}", number_roman.first, number_roman.second);
             });
 
             expect(joined_roman_numerals).to eq(std::vector<std::string>{"1=I", "2=II", "3=III", "4=IV", "5=V",
                                                                               "6=VI", "7=VII", "8=VIII", "9=IX", "10=X" });
+        })
+
+        it("should join integers separated by comma",[](){
+            std::vector<int> firstTenNumbers = uva::faker::sequence::from_to(0, 10);
+
+            auto joined_numbers = uva::string::join(firstTenNumbers, ',');
+
+            expect(joined_numbers).to eq(std::string("0,1,2,3,4,5,6,7,8,9"));
         })
     )
 
