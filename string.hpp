@@ -94,7 +94,7 @@ namespace uva
         std::string tolower(const std::string& __str);
 
         template<typename T>
-        std::string join(std::vector<T> array, const std::string& separator = "")
+        std::string join(std::vector<T> array, const std::string_view& separator = "")
         {
             std::stringstream ss;
 
@@ -115,13 +115,13 @@ namespace uva
         template<typename T>
         std::string join(std::vector<T> array, const char& separator = '\0')
         {
-            return join(array, std::string(1, separator));
+            return join(array, std::string_view(&separator, 1));
         }
 
         template<typename T>
         std::string join(std::vector<T> array, const char* separator = '\0')
         {
-            return join(array, std::string(separator));
+            return join(array, std::string_view(separator));
         }
 
         template <class map, typename function>
