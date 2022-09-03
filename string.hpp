@@ -93,19 +93,6 @@ namespace uva
 
         std::string tolower(const std::string& __str);
 
-        template <class map, typename function>
-        auto join(const map& m, function f)
-        {
-            std::vector<decltype(f(typename map::value_type()))> values;
-
-            for(const typename map::value_type& val : m)
-            {
-                values.push_back(std::move(f(val)));
-            }
-
-            return values;
-        }
-
         template<typename T>
         std::string join(std::vector<T> array, const std::string& separator = "")
         {
@@ -129,6 +116,25 @@ namespace uva
         std::string join(std::vector<T> array, const char& separator = '\0')
         {
             return join(array, std::string(1, separator));
+        }
+
+        template<typename T>
+        std::string join(std::vector<T> array, const char* separator = '\0')
+        {
+            return join(array, std::string(separator));
+        }
+
+        template <class map, typename function>
+        auto join(const map& m, function f)
+        {
+            std::vector<decltype(f(typename map::value_type()))> values;
+
+            for(const typename map::value_type& val : m)
+            {
+                values.push_back(std::move(f(val)));
+            }
+
+            return values;
         }
 
         template<typename map>
