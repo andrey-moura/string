@@ -95,3 +95,46 @@ std::string uva::string::replace(const std::string& _str, const char& find, cons
 
     return str;
 }
+
+std::vector<std::string_view> uva::string::tokenize(std::string_view& str)
+{
+    std::vector<std::string_view> tokens;
+
+    const char* begin = str.data();
+    const char* end = str.data()+str.size();
+    const char* iterator = begin;
+
+    const char* current_token_begin = nullptr;
+    const char* current_token_end = nullptr;
+
+    while(iterator != end)
+    {
+        if(isspace(*iterator)) {
+            if(current_token_begin)
+            {
+                current_token_end = iterator;
+            }
+        } else {
+            if(!current_token_begin)
+            {
+                current_token_begin = iterator;
+            }
+        }
+
+        if(current_token_begin && current_token_end)
+        {
+            tokens.push_back({current_token_begin, current_token_end});
+            current_token_begin = nullptr;
+            current_token_end = nullptr;
+        }
+
+        ++iterator;
+    }
+
+    if(current_token_begin && str.size())
+    {
+        tokens.push_back({current_token_begin, end});
+    }
+
+    return tokens;
+}

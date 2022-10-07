@@ -96,6 +96,10 @@ namespace uva
         template<typename T>
         std::string join(std::vector<T> array, const std::string_view& separator = "")
         {
+            if(array.empty()) {
+                return "";
+            }
+
             std::stringstream ss;
 
             for(int index = 0; index < array.size()-1; ++index)
@@ -191,5 +195,7 @@ namespace uva
         std::string to_snake_case(const std::string& s);
 
         std::string replace(const std::string& str, const char& find, const char& replace);
+
+        std::vector<std::string_view> tokenize(std::string_view& str);
     };
 };
