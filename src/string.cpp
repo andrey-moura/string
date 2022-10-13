@@ -96,7 +96,7 @@ std::string uva::string::replace(const std::string& _str, const char& find, cons
     return str;
 }
 
-std::vector<std::string_view> uva::string::tokenize(std::string_view& str)
+std::vector<std::string_view> uva::string::tokenize(std::string_view str)
 {
     std::vector<std::string_view> tokens;
 
@@ -123,7 +123,7 @@ std::vector<std::string_view> uva::string::tokenize(std::string_view& str)
 
         if(current_token_begin && current_token_end)
         {
-            tokens.push_back({current_token_begin, current_token_end});
+            tokens.push_back(std::string_view(current_token_begin, current_token_end-current_token_begin));
             current_token_begin = nullptr;
             current_token_end = nullptr;
         }
@@ -133,8 +133,29 @@ std::vector<std::string_view> uva::string::tokenize(std::string_view& str)
 
     if(current_token_begin && str.size())
     {
-        tokens.push_back({current_token_begin, end});
+        tokens.push_back(std::string_view(current_token_begin, end-current_token_begin));
     }
 
     return tokens;
+}
+
+std::string uva::string::capitalize(const std::string& __string)
+{
+    std::string capitalized;
+    capitalized.reserve(__string.size());
+
+    bool last_was_space = true;
+
+    for(char c : __string)
+    {
+        if(last_was_space) {
+            c = toupper(c);
+        }
+
+        last_was_space = isspace(c);
+
+        capitalized.push_back(c);
+    }
+
+    return capitalized;
 }

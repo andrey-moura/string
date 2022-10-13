@@ -196,6 +196,33 @@ namespace uva
 
         std::string replace(const std::string& str, const char& find, const char& replace);
 
-        std::vector<std::string_view> tokenize(std::string_view& str);
+        std::vector<std::string_view> tokenize(std::string_view str);
+
+        /**
+         *  @brief  Removes duplicated values in @a __vector.
+         *  @param __vector The vector containing duplicated (or not) values
+         *  @return  A new vector by removing duplicate values.
+        */
+        template<typename T>
+        std::vector<T> uniq(const std::vector<T>& __vector)
+        {
+            std::vector<T> results;
+            results.reserve(__vector.size());
+
+            for(const auto& value : __vector) {
+                if(std::find(results.begin(), results.end(), value) == results.end())
+                {
+                    results.push_back(value);
+                }
+            }
+
+            return results;
+        }
+        /**
+         *  @brief Converts the starting letters of all words of @a __string to it's uppercase representation.
+         *  @param  __string The string to be capitalized.
+         *  @return A capitalized copy of @a __string.
+         */
+        std::string capitalize(const std::string& __string);
     };
 };
