@@ -35,6 +35,57 @@ const std::vector<std::string> person_names =
     "Zafar",
 };
 
+std::vector<std::pair<std::string, std::string>> words_plurals =
+{
+    { "car", 	  "cars" },
+    { "house", 	  "houses" },
+    { "book", 	  "books" },
+    { "bird", 	  "birds" },
+    { "pencil",   "pencils" },
+    { "kiss", 	  "kisses" },
+    { "wish", 	  "wishes" },
+    { "match", 	  "matches" },
+    { "fox", 	  "foxes" },
+    { "quiz", 	  "quizzes" },
+    { "boy", 	  "boys" },
+    { "holiday",  "holidays" },
+    { "key", 	  "keys" },
+    { "guy", 	  "guys" },
+    { "party", 	  "parties" },
+    { "lady", 	  "ladies" },
+    { "story", 	  "stories" },
+    { "nanny", 	  "nannies" },
+    { "city", 	  "cities" },
+    { "life", 	  "lives" },
+    { "leaf", 	  "leaves" },
+    { "thief", 	  "thieves" },
+    { "wife", 	  "wives" },
+    { "tomato",   "tomatoes" },
+    { "potato",   "potatoes" },
+    { "echo", 	  "echoes" },
+    { "hero", 	  "heroes" },
+    { "man", 	  "men" },
+    { "woman", 	  "women" },
+    { "child", 	  "children" },
+    { "foot", 	  "feet" },
+    { "tooth", 	  "teeth" },
+    { "goose", 	  "geese" },
+    { "mouse", 	  "mice" },
+    { "fish", 	  "fish" },
+    { "sheep", 	  "sheep" },
+    { "deer", 	  "deer" },
+    { "moose", 	  "moose" },
+    { "aircraft", "aircraft" },
+    { "roof",     "roofs" },
+    { "cliff",    "cliffs" },
+    { "chief",    "chiefs" },
+    { "belief",   "beliefs" },
+    { "chef",     "chefs" },
+    { "piano",    "pianos" },
+    { "halo",     "halos" },
+    { "photo",    "photos" },
+};
+
 std::map<int, std::string> romanNumeralsMap =
 {
     { 1, "I" },
@@ -129,7 +180,13 @@ cspec_describe("uva::string",
                 expect(str).to eq("Some Text");
             })
         )
+    )
 
-
+    describe("pluralize",
+        it("should pluralize correctly", [](){
+            for(const std::pair<std::string, std::string>& word_plural : words_plurals) {
+                expect(uva::string::pluralize(word_plural.first)).to eq(word_plural.second);
+            }
+        })
     )
 );

@@ -224,5 +224,30 @@ namespace uva
          *  @return A capitalized copy of @a __string.
          */
         std::string capitalize(const std::string& __string);
+        /**
+         *  @brief Check if a string ends with one of the @a __suffixes
+         *  @param  __string To be checked.
+         *  @param  __suffixes To be searched.
+         *  @return True if @a __string ends_with one of the @a __suffixes, false otherwise.
+         */
+        bool ends_with(const std::string& __string, const std::vector<std::string>& __suffixes);
+        /**
+         *  @brief Check if character is a vowel.
+         *  @param  __c To be checked.
+         *  @return True if @a __c is vowel, false otherwise.
+         */
+        bool isvowel(const char& __c);
+        /**
+         *  @brief Check if character is a consonant.
+         *  @param  __c To be checked.
+         *  @return True if @a __c is consonant, false otherwise.
+         */
+        bool isconsonant(const char& __c);
+        /**
+         *  @brief Converts an (english) word to it's plural. It covers almost every english rule.
+         *  @param  __string To be pluralized.
+         *  @return A pluralized copy of @a __string.
+         */
+        std::string pluralize(std::string __string);
     };
 };
