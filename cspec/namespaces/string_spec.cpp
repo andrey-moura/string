@@ -49,9 +49,9 @@ std::map<int, std::string> romanNumeralsMap =
     { 10, "X" },
 };
 
-cspec_describe("uva::support",
+cspec_describe("uva::string",
 
-    context("join",
+    describe("join",
         it("should join roman with their numerals",[](){
             auto joined_roman_numerals = uva::string::join(romanNumeralsMap, [](const auto& number_roman) {
                 return std::format("{}={}", number_roman.first, number_roman.second);
@@ -70,7 +70,7 @@ cspec_describe("uva::support",
         })
     )
 
-    context("select",
+    describe("select",
         it("should only include strings who starts with a", [](){
             std::vector<std::string> only_starts_with_a_names = uva::string::select(person_names, [](const std::string& str) {
                 return str.starts_with('A');
@@ -80,7 +80,7 @@ cspec_describe("uva::support",
         })
     )
 
-    context("map",
+    describe("map",
         it("should map integers to strings", [](){
             std::vector<int> firstTenNumbers = uva::faker::sequence::from_to(0, 10);
 
@@ -92,7 +92,7 @@ cspec_describe("uva::support",
         })
     )
 
-    context("tokenize",
+    describe("tokenize",
         it("should tokenize string by spaces", [](){
             std::string_view sentence = R"~~~(Some text. It should be splited, and match the expected result.
                                      All spaces  , tabs, new lines should be ignored.)~~~";
@@ -105,5 +105,31 @@ cspec_describe("uva::support",
 
             expect(tokenized).to eq(results);
         })
+    )
+
+    describe("capitalize",
+        context("with 1 word string",
+            it("should capitalize correctly string", [](){
+                std::string str = uva::string::capitalize("foo");
+
+                expect(str).to eq("Foo");
+            })
+        )
+
+        context("with 2 word string",
+            it("should capitalize correctly string", [](){
+                std::string str = uva::string::capitalize("foo bar");
+
+                expect(str).to eq("Foo Bar");
+            })
+
+            it("should capitalize correctly string with one workd already capitalized", [](){
+                std::string str = uva::string::capitalize("Some text");
+
+                expect(str).to eq("Some Text");
+            })
+        )
+
+
     )
 );
