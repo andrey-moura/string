@@ -6,6 +6,8 @@
 #include <vector>
 #include <functional>
 #include <map>
+#include <format>
+#include <chrono>
 
 const std::string& operator||(const std::string& left, const std::string& right);
 
@@ -94,39 +96,75 @@ namespace uva
         std::string tolower(const std::string& __str);
 
         template<typename T>
-        std::string join(std::vector<T> array, const std::string_view& separator = "")
+        std::string join(const std::vector<T>& array, const std::string_view& separator = "")
         {
             if(array.empty()) {
                 return "";
             }
 
-            std::stringstream ss;
+            std::string ss;
+            ss.reserve(array.size()*20);
 
             for(int index = 0; index < array.size()-1; ++index)
             {
-                ss << array[index];
-                ss << separator;
+                ss.append(std::format("{}", array[index]));
+                ss.append(separator);
             }
 
             if(!array.empty())
             {
-                ss << array.back();
+                ss.append(std::format("{}", array.back()));
             }
 
-            return ss.str();
+            return ss;
         }
 
         template<typename T>
-        std::string join(std::vector<T> array, const char& separator = '\0')
+        std::string join(const std::vector<T>& array, const char& separator = '\0')
         {
             return join(array, std::string_view(&separator, 1));
         }
 
         template<typename T>
-        std::string join(std::vector<T> array, const char* separator = '\0')
+        std::string join(const std::vector<T>& array, const char* separator = '\0')
         {
             return join(array, std::string_view(separator));
         }
+        // template<typename key, typename value>
+        // void join_append_iterator(std::string& str, const std::map<typename key, typename value>::iterator& it)
+        // {
+        //     if constexpr(std::is_same<std::string, key>::value)
+        //     {
+        //         str.append(std::format("'{}': {}", it->first, it->second));
+        //     }
+        //     else 
+        //     {
+        //         str.append(std::format("{}: {}", it->first, it->second));
+        //     }
+        // }
+        // template<typename key, typename value>
+        // std::string join(const std::map<typename key, typename value>& map, const std::string_view& separator = "")
+        // {
+        //     if(map.empty()) {
+        //         return "";
+        //     }
+
+        //     std::string ss;
+        //     ss.reserve(map.size()*50);
+
+        //     for(auto it = map.begin(); it < map.end()-1; ++it)
+        //     {
+        //         join_append_iterator(ss, it);
+        //         ss.append(separator);
+        //     }
+
+        //     if(!map.empty())
+        //     {
+        //         join_append_iterator(ss, map.end()-1);
+        //     }
+
+        //     return ss;
+        // }
 
         template <class map, typename function>
         auto join(const map& m, function f)
@@ -249,5 +287,59 @@ namespace uva
          *  @return A pluralized copy of @a __string.
          */
         std::string pluralize(std::string __string);
+
+        template<typename duration>
+        std::string format_duration(const duration& __duration, const char* repre)
+        {
+            return std::format("{}{}", __duration.count(), repre);
+        }
+
+        template<typename to_cast, typename duration>
+        bool format_duration_if_can(const duration& __duration, std::string& output, int max, const char* repre)
+        {
+            to_cast casted_duration = std::chrono::duration_cast<to_cast>(__duration);
+
+            //There is 1000 nanoseconds in one microsecond
+            auto count = casted_duration.count();
+            if(count < max)
+            {
+                output = format_duration(casted_duration, repre);
+                return true;
+            }
+
+            return false;
+        }
+
+        template<typename duration_type>
+        std::string pretty_format_duration(duration_type duration)
+        {
+            std::string output;
+            if(format_duration_if_can<std::chrono::nanoseconds, duration_type>(duration, output, 1000, "ns"))
+            {
+                return output;
+            }
+
+            if(format_duration_if_can<std::chrono::microseconds, duration_type>(duration, output, 1000, "μs"))
+            {
+                return output;
+            }
+
+            if(format_duration_if_can<std::chrono::milliseconds, duration_type>(duration, output, 1000, "ms"))
+            {
+                return output;
+            }
+
+            if(format_duration_if_can<std::chrono::duration<float, std::ratio<1>>, duration_type>(duration, output, 60, "s"))
+            {
+                return output;
+            }
+
+            if(format_duration_if_can<std::chrono::duration<float, std::ratio<60>>, duration_type>(duration, output, 60, "m"))
+            {
+                return output;
+            }
+
+            return format_duration(duration, "h");
+        }
     };
 };

@@ -143,6 +143,21 @@ cspec_describe("uva::string",
         })
     )
 
+    describe("to_snake_case",
+        context("string with characters only", 
+            it("should convert to snake case", [](){
+                std::string str = "Some string to convert";
+                expect(uva::string::to_snake_case(str)).to eq("some_string_to_convert");
+            })
+        )
+        context("string with characters and numbers", 
+            it("should convert to snake case", [](){
+                std::string str = "Some0string1to2convert";
+                expect(uva::string::to_snake_case(str)).to eq("some_0_string_1_to_2_convert");
+            })
+        )        
+    )
+
     describe("tokenize",
         it("should tokenize string by spaces", [](){
             std::string_view sentence = R"~~~(Some text. It should be splited, and match the expected result.
@@ -174,7 +189,7 @@ cspec_describe("uva::string",
                 expect(str).to eq("Foo Bar");
             })
 
-            it("should capitalize correctly string with one workd already capitalized", [](){
+            it("should capitalize correctly string with one word already capitalized", [](){
                 std::string str = uva::string::capitalize("Some text");
 
                 expect(str).to eq("Some Text");
@@ -188,5 +203,42 @@ cspec_describe("uva::string",
                 expect(uva::string::pluralize(word_plural.first)).to eq(word_plural.second);
             }
         })
+    )
+
+    describe("pretty_print_duration", 
+        context("with nanoseconds",
+            it("should have correct values", [](){
+                expect(uva::string::pretty_format_duration(std::chrono::nanoseconds(2))).to eq("2ns");
+                expect(uva::string::pretty_format_duration(std::chrono::nanoseconds(1000))).to eq("1μs");
+            })
+        )
+
+        context("with microseconds",
+            it("should have correct values", [](){
+                expect(uva::string::pretty_format_duration(std::chrono::microseconds(10))).to eq("10μs");
+                expect(uva::string::pretty_format_duration(std::chrono::microseconds(2000))).to eq("2ms");
+            })
+        )
+
+        context("with milliseconds",
+            it("should have correct values", [](){
+                expect(uva::string::pretty_format_duration(std::chrono::milliseconds(20))).to eq("20ms");
+                expect(uva::string::pretty_format_duration(std::chrono::milliseconds(1500))).to eq("1.5s");
+            })
+        )
+
+        context("with seconds",
+            it("should have correct values", [](){
+                expect(uva::string::pretty_format_duration(std::chrono::seconds(1))).to eq("1s");
+                expect(uva::string::pretty_format_duration(std::chrono::seconds(90))).to eq("1.5m");
+            })
+        )
+
+        context("with hours",
+            it("should have correct values", [](){
+                expect(uva::string::pretty_format_duration(std::chrono::hours(1))).to eq("1h");
+                expect(uva::string::pretty_format_duration(std::chrono::hours(1000))).to eq("1000h");
+            })
+        )
     )
 );

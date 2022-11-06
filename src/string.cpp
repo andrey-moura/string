@@ -74,7 +74,31 @@ std::string uva::string::split_on_upper(const std::string& s, char separator)
 
 std::string uva::string::to_snake_case(const std::string& s)
 {
-    return uva::string::split_on_upper(s, '_');
+    std::string splited_upper = uva::string::split_on_upper(s, '_');
+    for(char& c : splited_upper)
+    {
+        if(isspace(c))
+        {
+            c = '_';
+        }
+    }
+    std::string splited_numbers;
+    splited_numbers.reserve(splited_upper.size());
+
+    for(const char& c : splited_upper)
+    {
+        if(isdigit(c))
+        {
+            splited_numbers.push_back('_');
+            splited_numbers.push_back(c);
+            splited_numbers.push_back('_');
+        } else {
+            splited_numbers.push_back(c);
+        }
+        
+    }
+
+    return splited_numbers;
 }
 
 std::string uva::string::replace(const std::string& _str, const char& find, const char& replace)
