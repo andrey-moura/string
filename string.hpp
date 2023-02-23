@@ -70,6 +70,12 @@ namespace uva
         template <typename k, typename v>
         struct is_map<std::map<k, v>> : std::true_type { };
 
+        template<typename T>
+        struct is_pointer { static const bool value = false; };
+
+        template<typename T>
+        struct is_pointer<T*> { static const bool value = true; };
+
         template<typename C, typename V>
         void add_to_container(C& container, V&& value) {
             if constexpr(is_map<C>::value)
