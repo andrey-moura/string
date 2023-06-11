@@ -22,6 +22,22 @@ std::string uva::string::tolower(const std::string& __str)
     return str;
 }
 
+std::string uva::string::toupper(const std::string &__str)
+{
+    std::string str;
+    str.reserve(__str.size());
+
+    for(const char& c : __str) {
+        if(isalpha(c)) {
+            str.push_back(std::toupper(c));
+        } else {
+            str.push_back(c);
+        }
+    }
+
+    return str;
+}
+
 std::string uva::string::prefix_sufix(const std::string& str, const std::string& prefix, const std::string& sufix)
 {
     std::stringstream ss;
@@ -173,7 +189,7 @@ std::string uva::string::capitalize(const std::string& __string)
     for(char c : __string)
     {
         if(last_was_space) {
-            c = toupper(c);
+            c = std::toupper(c);
         }
 
         last_was_space = isspace(c);

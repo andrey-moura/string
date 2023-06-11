@@ -100,6 +100,7 @@ namespace uva
         using rebound = rebinder<T>::template rebind<Us...>;
 
         std::string tolower(const std::string& __str);
+        std::string toupper(const std::string& __str);
 
         template<typename T>
         std::string join(const std::vector<T>& array, const std::string_view& separator = "")
