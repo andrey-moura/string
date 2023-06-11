@@ -15,6 +15,12 @@ namespace uva
 {
     namespace string
     {
+        template <auto left, auto right, typename = void>
+        struct function_is_same : std::false_type {};
+
+        template <auto left, auto right>
+        struct function_is_same<left, right, std::enable_if_t<left == right>> : std::true_type {};
+
         template<typename T>
         struct has_const_iterator
         {
