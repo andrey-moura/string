@@ -10,6 +10,7 @@ add_library(uva-string
 include_directories(${CMAKE_CURRENT_LIST_DIR})
 
 #Tests
-
-#Create tests for parent project
-cspec_configure("uva-string" ${CMAKE_CURRENT_LIST_DIR} "uva-string")
+if(TARGET cspec)
+	#Create tests for project
+	cspec_configure("uva-string" ${CMAKE_CURRENT_LIST_DIR} "uva-string")
+endif()
