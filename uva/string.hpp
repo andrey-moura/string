@@ -354,5 +354,46 @@ namespace uva
 
             return format_duration(duration, "h");
         }
+
+        template<typename char_type>
+        std::basic_string<char_type> unescape(const std::basic_string_view<char_type>& __str)
+        {
+            std::string output;
+            output.reserve(__str.size());
+
+            const char* start = __str.data();
+            const char* it    = start;
+
+            const char* end   = __str.data() + __str.size();
+
+            bool escaping = false;
+
+            while(it < end) {
+                if(escaping) {
+                    switch (*it)
+                    {
+                    case '\\':
+                    case '"':
+                    case '\'':
+                        output.push_back(*it);
+                        break;
+                    default:
+                        throw std::runtime_error("cannot escape.");
+                        break;
+                    }
+
+                    escaping = false;
+                } else if(*it == '\\')
+                {
+                    escaping = true;
+                } else {
+                    output.push_back(*it);
+                }
+
+                ++it;
+            }
+            
+            return output;
+        }
     };
 };
