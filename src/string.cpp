@@ -1,4 +1,4 @@
-#include "string.hpp"
+#include <uva/string.hpp>
 
 const std::string& operator||(const std::string& left, const std::string& right)
 {
@@ -14,6 +14,22 @@ std::string uva::string::tolower(const std::string& __str)
     for(const char& c : __str) {
         if(isalpha(c)) {
             str.push_back(std::tolower(c));
+        } else {
+            str.push_back(c);
+        }
+    }
+
+    return str;
+}
+
+std::string uva::string::toupper(const std::string &__str)
+{
+    std::string str;
+    str.reserve(__str.size());
+
+    for(const char& c : __str) {
+        if(isalpha(c)) {
+            str.push_back(std::toupper(c));
         } else {
             str.push_back(c);
         }
@@ -173,7 +189,7 @@ std::string uva::string::capitalize(const std::string& __string)
     for(char c : __string)
     {
         if(last_was_space) {
-            c = toupper(c);
+            c = std::toupper(c);
         }
 
         last_was_space = isspace(c);

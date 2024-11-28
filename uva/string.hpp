@@ -15,6 +15,8 @@ namespace uva
 {
     namespace string
     {
+        
+
         template<typename T>
         struct has_const_iterator
         {
@@ -70,6 +72,12 @@ namespace uva
         template <typename k, typename v>
         struct is_map<std::map<k, v>> : std::true_type { };
 
+        template<typename T>
+        struct is_pointer { static const bool value = false; };
+
+        template<typename T>
+        struct is_pointer<T*> { static const bool value = true; };
+
         template<typename C, typename V>
         void add_to_container(C& container, V&& value) {
             if constexpr(is_map<C>::value)
@@ -94,6 +102,7 @@ namespace uva
         using rebound = rebinder<T>::template rebind<Us...>;
 
         std::string tolower(const std::string& __str);
+        std::string toupper(const std::string& __str);
 
         template<typename T>
         std::string join(const std::vector<T>& array, const std::string_view& separator = "")
@@ -340,6 +349,47 @@ namespace uva
             }
 
             return format_duration(duration, "h");
+        }
+
+        template<typename char_type>
+        std::basic_string<char_type> unescape(const std::basic_string_view<char_type>& __str)
+        {
+            std::string output;
+            output.reserve(__str.size());
+
+            const char* start = __str.data();
+            const char* it    = start;
+
+            const char* end   = __str.data() + __str.size();
+
+            bool escaping = false;
+
+            while(it < end) {
+                if(escaping) {
+                    switch (*it)
+                    {
+                    case '\\':
+                    case '"':
+                    case '\'':
+                        output.push_back(*it);
+                        break;
+                    default:
+                        throw std::runtime_error("cannot escape.");
+                        break;
+                    }
+
+                    escaping = false;
+                } else if(*it == '\\')
+                {
+                    escaping = true;
+                } else {
+                    output.push_back(*it);
+                }
+
+                ++it;
+            }
+            
+            return output;
         }
     };
 };
